@@ -27,8 +27,10 @@ worldsRouter.get('/:worldId', (req, res, next) => {
 });
 
 worldsRouter.post('/', worldStatsVeryfier, (req, res, next) => {
+	console.log(req.body);
+
 	db.run(
-		'INSERT INTO World (name, world_origin, logo_url) VALUES ($name, $world_origin $logo_url);',
+		'INSERT INTO World (name, world_origin, logo_url) VALUES ($name, $world_origin, $logo_url);',
 		{
 			$name: req.body.world.name,
 			$world_origin: req.body.world.world_origin,
