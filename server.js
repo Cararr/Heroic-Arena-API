@@ -15,11 +15,7 @@ server.use(cors());
 
 server.use('/worlds', worldsRouter);
 
-server.get('/heroes', (req, res, next) => {
-	db.all(`SELECT * FROM Hero;`, (error, heroes) => {
-		error ? next(error) : res.send({ heroes });
-	});
-});
-
 server.use(errorHandler());
 server.listen(PORT, () => console.log(`CArArr on ${PORT}`));
+
+module.exports = server;

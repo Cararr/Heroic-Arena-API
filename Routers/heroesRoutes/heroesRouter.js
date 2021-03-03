@@ -1,7 +1,14 @@
 const express = require('express'),
-	sqlite3 = require('sqlite3');
+	sqlite3 = require('sqlite3'),
+	server = require('../../server');
 const heroRouter = express.Router({ mergeParams: true });
 const db = new sqlite3.Database('./database.sqlite');
+
+server.get('/heroes', (req, res, next) => {
+	db.all(`SELECT * FROM Hero;`, (error, heroes) => {
+		error ? next(error) : res.send({ heroes });
+	});
+});
 
 heroRouter.param('heroId', (req, res, next, id) => {
 	db.get(`SELECT * FROM Hero WHERE id = ${id}`, (error, hero) => {
