@@ -91,7 +91,7 @@ worldsRouter.delete('/:worldId', (req, res, next) => {
 				db.run(
 					`DELETE FROM World WHERE id = ${req.params.worldId};`,
 					(error) => {
-						error ? next(error) : res.status(204).send('World deleted.');
+						error ? next(error) : res.status(204).send();
 					}
 				);
 		}
