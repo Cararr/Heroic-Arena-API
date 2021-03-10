@@ -27,8 +27,6 @@ worldsRouter.get('/:worldId', (req, res, next) => {
 });
 
 worldsRouter.post('/', worldStatsVeryfier, (req, res, next) => {
-	console.log(req.body);
-
 	db.run(
 		'INSERT INTO World (name, world_origin, logo_url) VALUES ($name, $world_origin, $logo_url);',
 		{
@@ -101,7 +99,10 @@ worldsRouter.delete('/:worldId', (req, res, next) => {
 worldsRouter.use('/:worldId/heroes', heroRouter);
 
 function worldStatsVeryfier(req, res, next) {
-	req.body.world?.name ? next() : res.status(400).send(`Missing World's name!`);
+	console.log(req);
+	req.body.world?.name
+		? next()
+		: res.status(400).send({ error: "Missing World's name!" });
 }
 
 module.exports = worldsRouter;

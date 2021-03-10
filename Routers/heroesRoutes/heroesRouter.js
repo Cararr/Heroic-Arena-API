@@ -53,7 +53,7 @@ heroRouter.post('/', heroStatsVeryfier, (req, res, next) => {
 
 heroRouter.put('/:heroId', heroStatsVeryfier, (req, res, next) => {
 	db.run(
-		`UPDATE Hero SET name = $name, type = $type, power_level = ${req.body.hero.power_level}, strengths = $strengths, weakness = $weakness, image_url = $image_url, arena_avatar_url = $arena_avatar_url WHERE id = ${req.hero.id};`,
+		`UPDATE Hero SET name = $name, world_id = ${req.body.hero.world_id}, type = $type, power_level = ${req.body.hero.power_level}, strengths = $strengths, weakness = $weakness, image_url = $image_url, arena_avatar_url = $arena_avatar_url WHERE id = ${req.hero.id};`,
 		{
 			$name: req.body.hero.name,
 			$type: req.body.hero.type,
@@ -89,6 +89,9 @@ function heroStatsVeryfier(req, res, next) {
 		req.body.hero?.arena_avatar_url
 	)
 		next();
-	else res.status(400).send(`Missing Hero's required information!`);
+	else
+		res.status(400).send({
+			error: `Missing Hero's required information (name, world id, power, profile and arena images)!`,
+		});
 }
 module.exports = heroRouter;
