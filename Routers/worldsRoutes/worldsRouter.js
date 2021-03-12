@@ -99,7 +99,6 @@ worldsRouter.delete('/:worldId', (req, res, next) => {
 worldsRouter.use('/:worldId/heroes', heroRouter);
 
 function worldStatsVeryfier(req, res, next) {
-	console.log(req);
 	req.body.world?.name
 		? next()
 		: res.status(400).send({ error: "Missing World's name!" });

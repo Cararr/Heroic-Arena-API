@@ -82,16 +82,22 @@ heroRouter.delete('/:heroId', (req, res, next) => {
 });
 
 function heroStatsVeryfier(req, res, next) {
-	if (
-		req.body.hero?.name &&
-		req.body.hero?.power_level &&
-		req.body.hero?.image_url &&
-		req.body.hero?.arena_avatar_url
-	)
-		next();
-	else
+	const missingInformation = [];
+	for (const key in req.body.hero) {
+		if (
+			!req.body.hero[key] &&
+			['name', 'power_level', 'image_url', 'arena_avatar_url'].includes(key)
+		)
+			missingInformation.push(key.replace('_', ' '));
+	}
+	if (!missingInformation.length) next();
+	else {
 		res.status(400).send({
-			error: `Missing Hero's required information (name, world id, power, profile and arena images)!`,
+			error: `Missing Hero's required information: ${missingInformation.join(
+				', '
+			)}!`,
 		});
+	}
 }
 module.exports = heroRouter;
+//
