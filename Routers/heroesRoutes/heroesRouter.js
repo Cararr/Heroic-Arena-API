@@ -7,7 +7,7 @@ heroRouter.param('heroId', (req, res, next, id) => {
 	db.get(`SELECT * FROM Hero WHERE id = ${id}`, (error, hero) => {
 		if (error) next(error);
 		else if (hero) {
-			(req.hero = hero), next();
+			(req['hero'] = hero), next();
 		} else {
 			res.status(404).send('Hero not found!');
 		}
@@ -24,7 +24,7 @@ heroRouter.get('/', (req, res, next) => {
 });
 
 heroRouter.get('/:heroId', (req, res, next) => {
-	res.send({ hero: req.hero });
+	res.send({ hero: req['hero'] });
 });
 
 heroRouter.post('/', heroStatsVeryfier, (req, res, next) => {
@@ -53,7 +53,7 @@ heroRouter.post('/', heroStatsVeryfier, (req, res, next) => {
 
 heroRouter.put('/:heroId', heroStatsVeryfier, (req, res, next) => {
 	db.run(
-		`UPDATE Hero SET name = $name, world_id = ${req.body.hero.world_id}, type = $type, power_level = ${req.body.hero.power_level}, strengths = $strengths, weakness = $weakness, image_url = $image_url, arena_avatar_url = $arena_avatar_url WHERE id = ${req.hero.id};`,
+		`UPDATE Hero SET name = $name, world_id = ${req.body.hero.world_id}, type = $type, power_level = ${req.body.hero.power_level}, strengths = $strengths, weakness = $weakness, image_url = $image_url, arena_avatar_url = $arena_avatar_url WHERE id = ${req['hero'].id};`,
 		{
 			$name: req.body.hero.name,
 			$type: req.body.hero.type,
@@ -66,7 +66,7 @@ heroRouter.put('/:heroId', heroStatsVeryfier, (req, res, next) => {
 			if (error) next(error);
 			else
 				db.get(
-					`SELECT * FROM Hero WHERE id = ${req.hero.id};`,
+					`SELECT * FROM Hero WHERE id = ${req['hero'].id};`,
 					(error, hero) => {
 						error ? next(error) : res.send({ hero });
 					}
@@ -76,7 +76,7 @@ heroRouter.put('/:heroId', heroStatsVeryfier, (req, res, next) => {
 });
 
 heroRouter.delete('/:heroId', (req, res, next) => {
-	db.run(`DELETE FROM Hero WHERE id = ${req.hero.id};`, (error) => {
+	db.run(`DELETE FROM Hero WHERE id = ${req['hero'].id};`, (error) => {
 		error ? next(error) : res.status(204).send('Hero deleted.');
 	});
 });

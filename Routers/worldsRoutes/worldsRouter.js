@@ -8,7 +8,7 @@ worldsRouter.param('worldId', (req, res, next, id) => {
 	db.get(`SELECT * FROM World WHERE id = ${id}`, (error, world) => {
 		if (error) next(error);
 		else if (world) {
-			req.world = world;
+			req['world'] = world;
 			next();
 		} else {
 			res.status(404).send('World not found!');
@@ -23,7 +23,7 @@ worldsRouter.get('/', (req, res, next) => {
 });
 
 worldsRouter.get('/:worldId', (req, res, next) => {
-	res.send({ world: req.world });
+	res.send({ world: req['world'] });
 });
 
 worldsRouter.post('/', worldStatsVeryfier, (req, res, next) => {
@@ -50,7 +50,7 @@ worldsRouter.post('/', worldStatsVeryfier, (req, res, next) => {
 
 worldsRouter.put('/:worldId', worldStatsVeryfier, (req, res, next) => {
 	db.run(
-		`UPDATE World SET name = $name, world_origin = $world_origin, logo_url = $logo_url WHERE id = ${req.world.id};`,
+		`UPDATE World SET name = $name, world_origin = $world_origin, logo_url = $logo_url WHERE id = ${req['world'].id};`,
 		{
 			$name: req.body.world.name,
 			$world_origin: req.body.world.world_origin,
@@ -60,7 +60,7 @@ worldsRouter.put('/:worldId', worldStatsVeryfier, (req, res, next) => {
 			if (error) next(error);
 			else {
 				db.get(
-					`SELECT * FROM World WHERE id = ${req.world.id};`,
+					`SELECT * FROM World WHERE id = ${req['world'].id};`,
 					(error, world) => {
 						error ? next(error) : res.send({ world });
 					}
@@ -78,12 +78,12 @@ worldsRouter.delete('/:worldId', (req, res, next) => {
 			else if (heroes.length)
 				res.status(400).send(
 					`Can not delete the world if it has heroes related to it! ${
-						req.world.name
+						req['world'].name
 					} has fallowing heroes supplied: ${heroes
 						.map((hero) => {
 							return hero.name;
 						})
-						.join(', ')}`
+						.join(', ')}.`
 				);
 			else
 				db.run(
