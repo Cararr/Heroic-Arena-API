@@ -1,6 +1,5 @@
 const express = require('express'),
-	sqlite3 = require('sqlite3'),
-	jwt = require('jsonwebtoken');
+	sqlite3 = require('sqlite3');
 const loginRouter = express.Router();
 const db = new sqlite3.Database('./database.sqlite');
 
