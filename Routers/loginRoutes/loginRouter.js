@@ -5,7 +5,8 @@ const db = new sqlite3.Database('./database.sqlite');
 
 loginRouter.get('/', (req, res, next) => {
 	db.get(
-		`SELECT * FROM User WHERE name = '${req.query.name}';`,
+		`SELECT * FROM User WHERE name = $name;`,
+		{ $name: req.query.name },
 		(error, user) => {
 			if (error) next(error);
 			else if (user?.is_admin) res.json({ allowed: true });
