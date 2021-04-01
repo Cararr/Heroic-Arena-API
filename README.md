@@ -1,6 +1,9 @@
 # Heroic Arena
 
-Backend for *[Heroic Arena](https://heroic-arena.herokuapp.com/)*.
+Backend for _[Heroic Arena](https://heroic-arena.herokuapp.com/)_.
 
 ### Stack
-Node.js + sqlite.
+
+- Node.js
+- Express
+- sqlite
